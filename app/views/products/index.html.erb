@@ -1,7 +1,8 @@
 
 <% @products.each do |product| %>
+
   <h1><%= product.id %>: <%= product.name %></h1>
-<div id="body-<%= product.id %>"><%= truncate product.description %></div>
+<div id="body-<%= product.id %>">a<%#binding.pry%><%= truncate product.description %></div>
 <button class="js-more" data-id="<%= product.id %>">More Info</button>
 <% end %>
  
@@ -14,17 +15,19 @@ $(function () {
     let div 
     $.get("/products/" + id + "/description", function(data) {
       // Replace text of body-id div
-      console.log(`data: ${data}`)
-      let div = `<div>${data}</div>`
+      let div = data
       $.get("/products/" + id + "/inventory", function(inventory) {
       // Replace text of body-id div
+      console.log(inventory)
       if (inventory === "true") {
-          div = div + "<div>Available</div>"
+          div = div + " Available"
+          console.log(div)
       } else if (inventory === "false") {
-          div = div + "<div>Sold Out</div>"
+          div = div + " Sold Out"
       }
-    });
       $("#body-" + id).text(div);
+    });
+      
     });   
   });
 });
